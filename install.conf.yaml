@@ -28,6 +28,11 @@
     ~/.macos:
       path: .macos
       if: "[ `uname` = Darwin ]"
+    ~/.gitconfig:
+      path: .gitconfig
+      force: true
+    ~/.gitignore.global:
+      path: .gitignore.global
 
 - shell:
     - command: git submodule update --init --recursive
