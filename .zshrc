@@ -55,10 +55,6 @@ if [[ $(uname) == "Darwin" ]]; then
 fi
 
 # Python #######################################################################
-## Python Virtualenvwrapper settings. ##########################################
-export VIRTUALENVWRAPPER_PYTHON=$HOME/.pyenv/shims/python
-export VIRTUALENVWRAPPER_VIRTUALENV=$HOME/.pyenv/shims/virtualenv
-source $HOME/.pyenv/versions/$(pyenv global)/bin/virtualenvwrapper.sh
 
 
 
@@ -82,6 +78,38 @@ if [ -x "$(command -v code-insiders)" ] && [[ "$(uname -r)" != *"microsoft"* ]];
   code-insiders --list-extensions >"$HOME"/.dotfiles/CodeInsiders/extensions.list
 fi
 
+
+export PYENV_ROOT="$HOME/.pyenv"
+
+if [ ! -d "$PYENV_ROOT" ]; then
+    git clone https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
+    git clone https://github.com/pyenv/pyenv-update.git "$PYENV_ROOT/plugins/pyenv-update"
+    git clone https://github.com/pyenv/pyenv-virtualenv.git "$PYENV_ROOT/plugins/pyenv-virtualenv"
+    git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git "$PYENV_ROOT/plugins/pyenv-virtualenvwrapper"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+    # DEFAULT_PYTHON_VERSION=$(pyenv install --list | grep -v - | grep -v b | grep -v rc | tail -1 | awk '{ print $1 }')
+    DEFAULT_PYTHON_VERSION=$(pyenv install --list | grep -v - | grep -v b | grep -v rc | grep -e "3\.\d"| tail -1 | awk '{ print $1 }')
+    pyenv install "$DEFAULT_PYTHON_VERSION"
+    pyenv global "$DEFAULT_PYTHON_VERSION"
+    eval "$(pyenv init --path)"
+    eval "$(pyenv init -)"
+    # eval "$(pyenv virtualenv-init -)"
+    pip install --upgrade pip pip-tools virtualenv virtualenvwrapper
+    pip-sync "$DOTFILES_DIR/requirements.txt"
+else
+    export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init --path)"
+    eval "$(pyenv init -)"
+    # eval "$(pyenv virtualenv-init -)"
+fi
+
+## Python Virtualenvwrapper settings. ##########################################
+export VIRTUALENVWRAPPER_PYTHON=$HOME/.pyenv/shims/python
+#export VIRTUALENVWRAPPER_VIRTUALENV=$HOME/.pyenv/shims/virtualenv
+#source $HOME/.pyenv/versions/$(pyenv global)/bin/virtualenvwrapper.sh
+export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+export WORKON_HOME=$HOME/.virtualenvs
+pyenv virtualenvwrapper_lazy
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
