@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Path to your dotfiles installation.
+export DOTFILES="$HOME/.dotfiles"
+
+
+# Battery
+## Show battery percentage
+defaults write com.apple.menuextra.battery ShowPercent -string "YES"
