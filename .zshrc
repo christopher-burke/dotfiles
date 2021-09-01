@@ -54,10 +54,16 @@ if [[ $(uname) == "Darwin" ]]; then
     }
 fi
 
+# Capture existing VSCode extensions ###########################################
+# Skip if running in WSL
+if [ -x "$(command -v code)" ] && [[ "$(uname -r)" != *"microsoft"* ]]; then
+  code --list-extensions >"$HOME"/.dotfiles/Code/extensions.list
+fi
+if [ -x "$(command -v code-insiders)" ] && [[ "$(uname -r)" != *"microsoft"* ]]; then
+  code-insiders --list-extensions >"$HOME"/.dotfiles/CodeInsiders/extensions.list
+fi
+
 # Python #######################################################################
-
-
-
 ## Functions Custom ############################################################
 # .gitignore file for Python.
 function pyignore() {
@@ -69,16 +75,6 @@ function pyclearcache(){
     find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
 }
 
-# Capture existing VSCode extensions ###########################################
-# Skip if running in WSL
-if [ -x "$(command -v code)" ] && [[ "$(uname -r)" != *"microsoft"* ]]; then
-  code --list-extensions >"$HOME"/.dotfiles/Code/extensions.list
-fi
-if [ -x "$(command -v code-insiders)" ] && [[ "$(uname -r)" != *"microsoft"* ]]; then
-  code-insiders --list-extensions >"$HOME"/.dotfiles/CodeInsiders/extensions.list
-fi
-
-
 export PYENV_ROOT="$HOME/.pyenv"
 
 if [ ! -d "$PYENV_ROOT" ]; then
@@ -87,26 +83,21 @@ if [ ! -d "$PYENV_ROOT" ]; then
     git clone https://github.com/pyenv/pyenv-virtualenv.git "$PYENV_ROOT/plugins/pyenv-virtualenv"
     git clone https://github.com/pyenv/pyenv-virtualenvwrapper.git "$PYENV_ROOT/plugins/pyenv-virtualenvwrapper"
     export PATH="$PYENV_ROOT/bin:$PATH"
-    # DEFAULT_PYTHON_VERSION=$(pyenv install --list | grep -v - | grep -v b | grep -v rc | tail -1 | awk '{ print $1 }')
     DEFAULT_PYTHON_VERSION=$(pyenv install --list | grep -v - | grep -v b | grep -v rc | grep -e "3\.\d"| tail -1 | awk '{ print $1 }')
     pyenv install "$DEFAULT_PYTHON_VERSION"
     pyenv global "$DEFAULT_PYTHON_VERSION"
     eval "$(pyenv init --path)"
     eval "$(pyenv init -)"
-    # eval "$(pyenv virtualenv-init -)"
     pip install --upgrade pip pip-tools virtualenv virtualenvwrapper
-    pip-sync "$DOTFILES_DIR/requirements.txt"
+    # pip-sync "$DOTFILES_DIR/requirements.txt"
 else
     export PATH="$PYENV_ROOT/bin:$PATH"
     eval "$(pyenv init --path)"
     eval "$(pyenv init -)"
-    # eval "$(pyenv virtualenv-init -)"
 fi
 
 ## Python Virtualenvwrapper settings. ##########################################
 export VIRTUALENVWRAPPER_PYTHON=$HOME/.pyenv/shims/python
-#export VIRTUALENVWRAPPER_VIRTUALENV=$HOME/.pyenv/shims/virtualenv
-#source $HOME/.pyenv/versions/$(pyenv global)/bin/virtualenvwrapper.sh
 export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
 export WORKON_HOME=$HOME/.virtualenvs
 pyenv virtualenvwrapper_lazy
