@@ -1,0 +1,49 @@
+# Python
+*.pyc
+.python-version
+
+# Thumbnail cache files
+._*
+Thumbs.db
+
+### Ansible ###
+# Ansible retry files
+*.retry
+
+# Test driven development on Ansible with Molecule, Testinfra and pytest
+.cache/
+.idea/
+.molecule/
+.tox/
+__pycache__/
+#tests/roles
+
+### macOS ###
+*.DS_Store
+.AppleDouble
+.LSOverride
+Desktop.ini
+
+# Icon must end with two \r
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.fseventsd
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+.apdisk
+Network Trash Folder
+Temporary Items
+
+
