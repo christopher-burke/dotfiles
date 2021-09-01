@@ -1,0 +1,50 @@
+[apply]
+# Detect whitespace errors when applying a patch
+    whitespace = fix
+[core]
+    excludesfile = ~/.gitignore.global
+    whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+[user]
+    name = Christopher Burke
+    email = christopherjamesburke@gmail.com
+[diff]
+    tool = default-difftool
+[difftool "default-difftool"]
+    cmd = code --wait --diff $LOCAL $REMOTE
+[status]
+    submoduleSummary = true
+    showUntrackedFiles = all
+[pager]
+    branch = false
+[fetch]
+    prune = true
+[branch "master"]
+    mergeOptions = --no-ff
+[pull]
+    rebase = true
+[rebase]
+    autoStash = true
+[push]
+    followTags = true
+    default = current
+[color]
+    status = auto
+    branch = auto
+    interactive = auto
+    diff = auto
+    ui = auto
+[color "branch"]
+    current = yellow reverse
+    local = yellow
+    remote = green
+[color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = cyan
+[init]
+    defaultBranch = main
