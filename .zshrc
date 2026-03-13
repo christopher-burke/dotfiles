@@ -97,11 +97,15 @@ else
 fi
 
 ## Python Virtualenvwrapper settings. ##########################################
-export VIRTUALENVWRAPPER_PYTHON=$HOME/.pyenv/shims/python
-export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
-export WORKON_HOME=$HOME/.virtualenvs
-pyenv virtualenvwrapper_lazy
+# export VIRTUALENVWRAPPER_PYTHON=$HOME/.pyenv/shims/python
+# export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+# export WORKON_HOME=$HOME/.virtualenvs
+# pyenv virtualenvwrapper_lazy
+
+export PYTHONUSERBASE="$HOME/.local"
+export PATH="$HOME/.local/bin:$PATH"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-# End of file 
+# End of file eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$(/opt/homebrew/bin/brew shellenv)"
