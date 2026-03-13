@@ -1,45 +1,28 @@
 - defaults:
     link:
       relink: true
+      create: true
+    shell:
+      stdout: true
+      stderr: true
 
-- clean: ["~"]
+- clean: ['~']
 
 - create:
-    - ~/Git_Projects/Personal/GitHub
-    - ~/Git_Projects/Personal/GitHub/christopher-burke
-    - ~/Git_Projects/Work
-    - ~/Playground
-    - ~/Projects
+    - ~/bin
+    - ~/.config
+    - ~/.cache
+    - ~/.local/share
 
 - link:
-    ~/.zprofile:
-      path: .zprofile
-      force: true
-    ~/.zshrc:
-      path: .zshrc
-      force: true
-    ~/.pythonrc:
-      path: .pythonrc
-      force: true
-    ~/.pdbrc:
-      path: .pdbrc
-    ~/.p10k.zsh:
-      path: .p10k.zsh
-    ~/.macos:
-      path: .macos
-      if: "[ `uname` = Darwin ]"
-    ~/.gitconfig:
-      path: .gitconfig
-      force: true
-    ~/.gitignore.global:
-      path: .gitignore.global
+    ~/.zshrc: .zshrc
+    ~/.zprofile: .zprofile
+    ~/.p10k.zsh: .p10k.zsh
+    ~/.gitconfig: .gitconfig
+    ~/.gitignore.global: .gitignore.global
 
 - shell:
-    - command: git submodule update --init --recursive
-      description: Installing submodules
-    - command: if [[ ! -d "$HOME"/.oh-my-zsh ]]; then git clone https://github.com/ohmyzsh/ohmyzsh.git "$HOME"/.oh-my-zsh; fi
-      description: Installing oh-my-zsh
-    - command: if [[ "$(echo $0)" != *"zsh"* ]]; then if [[ $(uname) == "Linux" ]]; then USER="$(whoami)" sudo usermod --shell /bin/zsh "$USER"; else chsh -s "$(which zsh)"; fi; fi
-      description: Changing shell to ZSH
-    - command: if [[ $(uname) == "Darwin" ]]; then source $HOME/.macos; fi
-      description: Setting up macOS
+    - [chmod +x ./scripts/bootstrap.sh, Ensure bootstrap is executable]
+    - [chmod +x ./scripts/doctor.sh, Ensure doctor is executable]
+    - [./scripts/bootstrap.sh, Run one-time bootstrap]
+    - [./scripts/doctor.sh, Validate environment]
